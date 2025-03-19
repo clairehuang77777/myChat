@@ -1,5 +1,6 @@
-import { LeftMsg } from './LeftMsg'
-import { RightMsg } from './RightMsg'
+// import { LeftMsg } from './LeftMsg'
+// import { RightMsg } from './RightMsg'
+import { Msg } from './Msg'
 import { useContext, useEffect } from 'react'
 import { SelectedIDContext } from '../SelectedIDContext'
 
@@ -21,17 +22,17 @@ export const RightSectionCenter = ({chat}) => {
   }
   },[chat])
   
-  useEffect(()=>{
-  if(chat.length > 0){
-      //user1會走left Msg, user2走Right Msg
-      const leftMsgArr = chat.filter((msg)=>msg.user === user1)
-      setLeftMsg(leftMsgArr)
+  // useEffect(()=>{
+  // if(chat.length > 0){
+  //     //user1會走left Msg, user2走Right Msg
+  //     const leftMsgArr = chat.filter((msg)=>msg.user === user1)
+  //     setLeftMsg(leftMsgArr)
 
-      const rightMsgArr = chat.filter((msg)=>msg.user === user2)
-      console.log(rightMsgArr)
-      setRightMsg(rightMsgArr)
-    }
-  },[chat,user1,user2])
+  //     const rightMsgArr = chat.filter((msg)=>msg.user === user2)
+  //     console.log(rightMsgArr)
+  //     setRightMsg(rightMsgArr)
+  //   }
+  // },[chat,user1,user2])
   
   console.log("user1 是:",user1)
   console.log("user2 是:",user2)
@@ -39,8 +40,9 @@ export const RightSectionCenter = ({chat}) => {
 
   return (
     <div className="right-section-centerArea h-[650px] border-1 border-gray-300 block overflow-scroll">
-      {leftmsg.map((msg, index)=> (<LeftMsg key={index} msg={msg}/>))}
-      {rightmsg.map((msg, index)=> (<RightMsg key={index} msg={msg}/>))}
+      {/* {leftmsg.map((msg, index)=> (<LeftMsg key={index} msg={msg}/>))}
+      {rightmsg.map((msg, index)=> (<RightMsg key={index} msg={msg}/>))} */}
+      {chat.map((msg, index) => (<Msg key={index} msg={msg}/>))}
     </div>
   )
 }
