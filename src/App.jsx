@@ -28,7 +28,7 @@ function App() {
   }
   
   fetchAllConverstion()
-  },[])
+  },[selectedID])
 
   console.log(selectedID)
   //
