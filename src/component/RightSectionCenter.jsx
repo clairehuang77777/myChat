@@ -176,7 +176,7 @@ export const RightSectionCenter = ({chat}) => {
 
   return (
     <>
-    <div className="right-section-topArea h-[75px] flex flex-row flex-grow border border-gray-300 inset-shadow-sm">
+    <div className="right-section-topArea h-[75px] flex flex-row flex-grow border border-gray-300 inset-shadow-sm dark:border-stone-500">
         <div className="right-section-topArea-img flex flex-row m-4">
           <img className="avatar-1-icon w-[40px] h-[40px] rounded-[45px]" src={`https://i.pravatar.cc/150?img=${user1}`} alt=""></img>
           <img className="avatar-2-icon  w-[40px] h-[40px] rounded-[45px] ml-2" src={`https://i.pravatar.cc/150?img=${user2}`} alt=""></img>
@@ -186,7 +186,7 @@ export const RightSectionCenter = ({chat}) => {
           </div>
       </div>
     </div>
-    <div className="right-section-centerArea h-[650px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm">
+    <div className="right-section-centerArea h-[650px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm dark:border-stone-500">
       {renderChat.map((msg, index) => (<Msg key={index} msg={msg}/>))}
     </div>
     </>
