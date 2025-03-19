@@ -1,4 +1,3 @@
-import './App.css'
 import { RightSectionTop } from '../src/component/RightSectionTop'
 import { TextArea } from '../src/component/TextArea'
 import { ChatCard } from './component/ChatCard'
@@ -51,24 +50,21 @@ function App() {
 
   return (
     <SelectedIDContext.Provider value={{selectedID, setSelectedID, user1, setUser1,user2, setUser2, singleChat, setSingleChat, leftmsg, setLeftMsg, rightmsg, setRightMsg }}>
-    <div className="container flex flex-row fixed top-[0px] left-[0px]w-full">
+    <div className="container flex flex-row fixed top-[0px] left-[45px] inset-0 h-screen overflow-hidden bg-white text-black">
         <div className="left-section w-[518px] flex flex-col">
-          <div className="left-section-topArea h-[75px] flex flex-row">
+          <div className="left-section-topArea h-[75px] flex flex-row border border-gray-300">
             <LeftSectionTop/>
           </div>
-          <div className="left-section-buttonArea w-[518px] h-lvh flex flex-col block overflow-scroll">
+          <div className="left-section-buttonArea w-[518px] flex-grow flex flex-col overflow-scroll inset-shadow-sm">
             {allConversations.map((chat, index)=>(
               <ChatCard key={index} chat={chat}/> 
             ))}
 
           </div>
         </div>
-        <div className="right-section w-[1603px]">
-          <div className="right-section-topArea h-[75px] flex flex-row border-1 border-gray-300">
-            <RightSectionTop/>
-          </div>
+        <div className="right-section flex flex-col flex-grow w-full">
           <RightSectionCenter chat={singleChat}/>
-          <div className="right-section-buttonArea h-[160px] flex flex-row border-1 border-gray-300 block">
+          <div className="right-section-buttonArea h-[160px] flex flex-row border border-gray-300 block">
             <TextArea/>
           </div>
         </div>
