@@ -5,9 +5,151 @@ import { useContext, useEffect, useState } from 'react'
 import { SelectedIDContext } from '../SelectedIDContext'
 
 export const RightSectionCenter = ({chat}) => {
+  const defaultMessage =[
+    {
+      "conversationId": 1,
+      "userId": 4,
+      "user": "David",
+      "avatar": "https://i.pravatar.cc/150?img=4",
+      "messageType": "text",
+      "message": "Jest vs Cypress?",
+      "reactions": {
+        "like": 4,
+        "love": 2,
+        "laugh": 0
+      },
+      "timestamp": 1739016000000
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "user": "Bob",
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "messageType": "text",
+      "message": "Redux or Zustand?",
+      "reactions": {
+        "like": 5,
+        "love": 3,
+        "laugh": 0
+      },
+      "timestamp": 1739016060000
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "user": "Bob",
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "messageType": "text",
+      "message": "Jest vs Cypress?",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 0
+      },
+      "timestamp": 1739016120000
+    },
+    {
+      "conversationId": 1,
+      "userId": 4,
+      "user": "David",
+      "avatar": "https://i.pravatar.cc/150?img=4",
+      "messageType": "text",
+      "message": "How's it going?",
+      "reactions": {
+        "like": 4,
+        "love": 1,
+        "laugh": 1
+      },
+      "timestamp": 1739016180000
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "user": "Bob",
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "messageType": "text",
+      "message": "Any book recommendations for developers?",
+      "reactions": {
+        "like": 2,
+        "love": 2,
+        "laugh": 0
+      },
+      "timestamp": 1739016240000
+    },
+    {
+      "conversationId": 1,
+      "userId": 4,
+      "user": "David",
+      "avatar": "https://i.pravatar.cc/150?img=4",
+      "messageType": "text",
+      "message": "I'm building a new side project.",
+      "reactions": {
+        "like": 5,
+        "love": 2,
+        "laugh": 1
+      },
+      "timestamp": 1739016300000
+    },
+    {
+      "conversationId": 1,
+      "userId": 4,
+      "user": "David",
+      "avatar": "https://i.pravatar.cc/150?img=4",
+      "messageType": "text",
+      "message": "What's your favorite editor?",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "laugh": 1
+      },
+      "timestamp": 1739016360000
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "user": "Bob",
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "messageType": "text",
+      "message": "What's your favorite editor?",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 1
+      },
+      "timestamp": 1739016420000
+    },
+    {
+      "conversationId": 1,
+      "userId": 4,
+      "user": "David",
+      "avatar": "https://i.pravatar.cc/150?img=4",
+      "messageType": "text",
+      "message": "I'm building a new side project.",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 2
+      },
+      "timestamp": 1739016480000
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "user": "Bob",
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "messageType": "text",
+      "message": "React is amazing!",
+      "reactions": {
+        "like": 4,
+        "love": 1,
+        "laugh": 2
+      },
+      "timestamp": 1739016540000
+    }
+  ]
   const {user1, setUser1,user2, setUser2, leftmsg, setLeftMsg, rightmsg, setRightMsg} = useContext(SelectedIDContext)
-  const [user1Name, setUser1Name] = useState('')
-  const [user2Name, setUser2Name] = useState('')
+  const [user1Name, setUser1Name] = useState('David')
+  const [user2Name, setUser2Name] = useState('Bob')
 
   useEffect(()=>{
     //定義user1, user2 是誰
@@ -30,6 +172,7 @@ export const RightSectionCenter = ({chat}) => {
   console.log("user1 是:",user1)
   console.log("user2 是:",user2)
 
+  const renderChat = chat.length > 0 ? chat : defaultMessage
 
   return (
     <>
@@ -44,7 +187,7 @@ export const RightSectionCenter = ({chat}) => {
       </div>
     </div>
     <div className="right-section-centerArea h-[650px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm">
-      {chat.map((msg, index) => (<Msg key={index} msg={msg}/>))}
+      {renderChat.map((msg, index) => (<Msg key={index} msg={msg}/>))}
     </div>
     </>
   )

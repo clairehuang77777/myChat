@@ -24,7 +24,7 @@ export const ChatCard = ({chat}) => {
   },[selectedID])
 
   return (
-      <div className={bgGrey? "chat-card flex flex-row border-1 border-gray-300 items-start bg-[#f1f1f1]": "chat-card flex flex-row border-1 border-gray-300 items-start active:bg-[#f1f1f1] visited:bg-[#f1f1f1]"} onClick={()=>handleChatCardClick(chat.id)}>
+      <div className={bgGrey? "chat-card flex flex-row border-1 border-gray-300 items-start bg-[#f1f1f1]": "chat-card flex flex-row border-1 border-gray-300 items-start active:bg-[#f1f1f1]"} onClick={()=>handleChatCardClick(chat.id)}>
         <div className="chat-card-left-area flex flex-row items-center justify-start ml-5 mt-7 mb-7">
           <img className="avatar-1-icon w-[40px] h-[40px] rounded-[45px]" src={chat.participants[0].avatar} alt="p1"></img>
           <img className="avatar-2-icon  w-[40px] h-[40px] rounded-[45px] ml-1" src={chat.participants[1].avatar} alt="p2"></img>

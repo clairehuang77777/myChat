@@ -14,7 +14,7 @@ export const Msg = ({msg}) => {
   console.log("當前的msg.user是",msg.userId)
 
   useEffect(()=>{
-      if (msg.userId === user2){
+      if (msg.userId === user2 || msg.userId === 2){
         setRightSideOn(true)
       } else {
         setRightSideOn(false)
