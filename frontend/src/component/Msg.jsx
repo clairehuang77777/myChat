@@ -62,7 +62,7 @@ export const Msg = ({msg}) => {
       <div className="left-msg-rightTextArea flex flex-col pt-3">
         <div className="left-msg-rightTextArea-top flex flex-row">
         <div className={isSystemMsg ?
-        "right-msg-rightTextArea-top-text w-fit ml-2 max-w-lg bg-[#9e9e9e] p-3 rounded-lg text-lg text-right text-white dark:bg-[#424242]":
+        "right-msg-rightTextArea-top-text w-fit ml-2 max-w-lg bg-[#9e9e9e] p-3 rounded-lg text-lg text-center text-white dark:bg-[#424242]":
         rightSideOn ? 
         "right-msg-rightTextArea-top-text w-fit ml-2 max-w-sm bg-[#f9f9f9] p-3 rounded-lg text-lg text-right dark:bg-[#424242]" : "left-msg-rightTextArea-top-text w-fit ml-2 max-w-sm bg-[#f9f9f9] p-3 rounded-lg text-lg text-left dark:bg-[#424242]"}>{useImage ? (<img src={msg.message}></img>):(<p>{msg.message}</p>)}</div>
         <div className="left-msg-rightTextArea-top-time text-xs pl-2 items-end justify-end flex flex-rows">{formattedDate}</div>

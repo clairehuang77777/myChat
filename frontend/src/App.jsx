@@ -13,11 +13,10 @@ function App() {
   const[singleChat, setSingleChat]=useState([])
   const [user1, setUser1]=useState(4)
   const [user2, setUser2]=useState(2)
-  const [leftmsg , setLeftMsg] = useState([])
-  const [rightmsg , setRightMsg] = useState([])
   const [isDarkMode, setIsDarkMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
+  )
+  const [newMsgUpdate, setNewMsgUpdate] = useState(false);
 
   useEffect(() => {
     // 偵測系統是否為 Dark Mode
@@ -56,6 +55,7 @@ function App() {
         const res = await getSingleCnvs(selectedID)
         console.log(res)
         setSingleChat(res)
+        setNewMsgUpdate(false)
       }catch(error){
         console.error("getSingleUserChat error", error)
       }
@@ -63,11 +63,12 @@ function App() {
 
     getSigleUserChat(selectedID)
     
-  },[selectedID])
+  },[selectedID, newMsgUpdate])
   
+console.log(newMsgUpdate)
 
   return (
-    <SelectedIDContext.Provider value={{selectedID, setSelectedID, user1, setUser1,user2, setUser2, singleChat, setSingleChat, leftmsg, setLeftMsg, rightmsg, setRightMsg, isDarkMode, setIsDarkMode }}>
+    <SelectedIDContext.Provider value={{selectedID, setSelectedID, user1, setUser1,user2, setUser2, singleChat, setSingleChat, isDarkMode, setIsDarkMode, newMsgUpdate, setNewMsgUpdate }}>
       <div className="container flex flex-row fixed top-[0px] left-[45px] inset-0 h-screen overflow-hidden bg-white text-black dark:bg-[#2B2B2B] dark:text-stone-200 dark:border-stone-500">
           <div className="left-section w-[518px] flex flex-col dark:border-stone-500">
             <div className="left-section-topArea h-[75px] flex flex-row border border-gray-300 dark:border-stone-500">

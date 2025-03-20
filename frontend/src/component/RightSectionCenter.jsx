@@ -147,7 +147,7 @@ export const RightSectionCenter = ({chat}) => {
       "timestamp": 1739016540000
     }
   ]
-  const {user1, setUser1,user2, setUser2, leftmsg, setLeftMsg, rightmsg, setRightMsg} = useContext(SelectedIDContext)
+  const {user1, setUser1,user2, setUser2, newMsgUpdate, setNewMsgUpdate} = useContext(SelectedIDContext)
   const [user1Name, setUser1Name] = useState('David')
   const [user2Name, setUser2Name] = useState('Bob')
 
@@ -168,7 +168,8 @@ export const RightSectionCenter = ({chat}) => {
   }
   },[chat])
   
-  
+    
+  console.log(newMsgUpdate)
   console.log("user1 是:",user1)
   console.log("user2 是:",user2)
 
