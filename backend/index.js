@@ -52,6 +52,8 @@ const allowCors = () => {
 app.use(cors(allowCors())); //處理跨域
 const corsOptions = allowCors()
 console.log("CORS 設定:", corsOptions); // 記錄 CORS 設定，方便 debug
+app.use(express.json()); //解析json格式的req
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -82,6 +84,45 @@ app.get(`/message`, (req, res) => {
   console.log(selectedMsg)
   res.send(selectedMsg)
 })
+
+app.post('/conversations/:id/messages/create',(req , res) =>{
+  console.log(req.body)//{ inputValue: 'this is good' }
+  console.log(req.params) //{ id: '1' }
+
+  const newConversationId = req.params.id
+  const newMessage = req.body.inputValue
+  const timestamp = req.body.timestamp
+
+  // 確保 conversationId 是數字
+  const conversationId = parseInt(newConversationId, 10);
+  if (isNaN(conversationId)) {
+    return res.status(400).json({ error: "Invalid conversation ID" });
+  }
+
+  const newSystemMessage = {
+     "conversationId": conversationId,
+      "userId": null,
+      "user": null,
+      "avatar": null,
+      "messageType": "system",
+      "message": `System message: ${newMessage}`,
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 0
+      },
+      "timestamp": timestamp
+  }
+  console.log("updated message", newSystemMessage)
+  console.log(chatData.messages)
+  chatData.messages.push(newSystemMessage)
+  
+  //把檔案寫進去local chat_json file
+  fs.writeFileSync(chatDataPath,JSON.stringify(chatData,null,2),"utf-8" )
+
+  res.status(201).json({ message: "success", data: chatData.messages });
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

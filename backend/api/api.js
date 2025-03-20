@@ -24,3 +24,18 @@ export async function getSingleCnvs(id){
     console.error("getSingleCnvs API error", error)
   }
 }
+
+export async function postSystemMsg(inputValue, updateId, timestamp){
+  try {
+    const res = await axios.post(`${API_URL}/conversations/${updateId}/messages/create`,{
+      inputValue,
+      updateId,
+      timestamp
+    });
+    console.log(res.data.message)
+    return res.data.message
+  }
+catch(error){
+    console.error("postSystemMsg Error", error)
+  } 
+}

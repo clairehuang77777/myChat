@@ -1571,6 +1571,34 @@
         "laugh": 1
       },
       "timestamp": 1739016540000
+    },
+    {
+      "conversationId": 1,
+      "userId": null,
+      "user": null,
+      "avatar": null,
+      "messageType": "system",
+      "message": "System message: Indecent text detected, please be polite",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 0
+      },
+      "timestamp": 1742455389434
+    },
+    {
+      "conversationId": 4,
+      "userId": null,
+      "user": null,
+      "avatar": null,
+      "messageType": "system",
+      "message": "System message: scholl closed at 4pm, please gather at infront door at 3:50pm",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 0
+      },
+      "timestamp": 1742455457499
     }
   ]
 }
