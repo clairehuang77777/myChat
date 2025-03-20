@@ -3,6 +3,8 @@
 import { Msg } from './Msg'
 import { useContext, useEffect, useState } from 'react'
 import { SelectedIDContext } from '../SelectedIDContext'
+import { MsgSkelton } from './MsgSkeleton'
+import { RightSectionTopSkeleton } from './RightSectionTopSkeleton'
 
 export const RightSectionCenter = ({chat}) => {
   const defaultMessage =[
@@ -147,9 +149,10 @@ export const RightSectionCenter = ({chat}) => {
       "timestamp": 1739016540000
     }
   ]
-  const {user1, setUser1,user2, setUser2, newMsgUpdate, setNewMsgUpdate} = useContext(SelectedIDContext)
-  const [user1Name, setUser1Name] = useState('David')
-  const [user2Name, setUser2Name] = useState('Bob')
+  const {user1, setUser1,user2, setUser2, newMsgUpdate, setNewMsgUpdate, isLoading} = useContext(SelectedIDContext)
+  const [user1Name, setUser1Name] = useState('')
+  const [user2Name, setUser2Name] = useState('')
+  const [isNameLoading, setIsNameLoading]=useState(true)
 
   useEffect(()=>{
     //定義user1, user2 是誰
@@ -164,7 +167,7 @@ export const RightSectionCenter = ({chat}) => {
     console.log(selecteduser2)
     setUser2(selecteduser2.userId) //right user
     setUser2Name(selecteduser2.user)
-
+    setIsNameLoading(false)
   }
   },[chat])
   
@@ -172,23 +175,34 @@ export const RightSectionCenter = ({chat}) => {
   console.log(newMsgUpdate)
   console.log("user1 是:",user1)
   console.log("user2 是:",user2)
+  console.log("isLoading status",isLoading)
 
   const renderChat = chat.length > 0 ? chat : defaultMessage
 
   return (
     <>
     <div className="right-section-topArea h-[75px] flex flex-row flex-grow border border-gray-300 inset-shadow-sm dark:border-stone-500">
-        <div className="right-section-topArea-img flex flex-row m-4">
-          <img className="avatar-1-icon w-[40px] h-[40px] rounded-[45px]" src={`https://i.pravatar.cc/150?img=${user1}`} alt=""></img>
-          <img className="avatar-2-icon  w-[40px] h-[40px] rounded-[45px] ml-2" src={`https://i.pravatar.cc/150?img=${user2}`} alt=""></img>
-      </div>
-      <div className="right-section-topArea-img flex flex-row">
-          <div className="right-section-topArea-userName text-2xl mt-5">{user1Name} & {user2Name}
-          </div>
-      </div>
+      {isNameLoading ? (
+      <RightSectionTopSkeleton/>
+      ):(<>
+            <div className="right-section-topArea-img flex flex-row m-4">
+                <img className="avatar-1-icon w-[40px] h-[40px] rounded-[45px]" src={`https://i.pravatar.cc/150?img=${user1}`} alt=""></img>
+                <img className="avatar-2-icon  w-[40px] h-[40px] rounded-[45px] ml-2" src={`https://i.pravatar.cc/150?img=${user2}`} alt=""></img>
+            </div>
+            <div className="right-section-topArea-img flex flex-row">
+                <div className="right-section-topArea-userName text-2xl mt-5">{user1Name} & {user2Name}
+                </div>
+            </div>
+          </>
+        )
+      }
     </div>
     <div className="right-section-centerArea h-[650px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm dark:border-stone-500">
-      {renderChat.map((msg, index) => (<Msg key={index} msg={msg}/>))}
+      {isLoading ? (
+        Array.from({ length: 10 }).map((_, index) =><MsgSkelton key={index} count={1}/>)
+      ) : (
+      renderChat.map((msg, index) => (<Msg key={index} msg={msg}/>))
+      )}
     </div>
     </>
   )

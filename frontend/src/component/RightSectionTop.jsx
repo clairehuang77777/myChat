@@ -7,7 +7,6 @@ export const RightSectionTop = () => {
       </div>
       <div className="right-section-topArea-img flex flex-row">
           <div className="right-section-topArea-userName text-2xl mt-5">David & Bob
-
           </div>
       </div>
     </>

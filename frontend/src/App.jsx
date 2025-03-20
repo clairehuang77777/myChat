@@ -6,6 +6,7 @@ import { RightSectionCenter } from './component/RightSectionCenter'
 import { getAllConversation, getSingleCnvs } from '../../backend/api/api'
 import { useEffect, useState } from 'react'
 import { SelectedIDContext } from './SelectedIDContext'
+import { ChatCardSkelton } from './component/ChatCardSkeleton'
 
 function App() {
   const[allConversations, setAllConversations]=useState([])
@@ -20,6 +21,8 @@ function App() {
   const [isLike, setIsLike]=useState(false)
   const [isLove, setIsLove]=useState(false)
   const [isLaugh, setIsLaugh]=useState(false)
+  const [isLoading, setIsLoading]=useState(true)
+  const [isChatLoading, setIsChatLoading]=useState(true)
 
   useEffect(() => {
     // 偵測系統是否為 Dark Mode
@@ -42,6 +45,7 @@ function App() {
       const conversations = await getAllConversation()
       console.log(conversations)
       setAllConversations(conversations)
+      setIsChatLoading(false)
     } catch(error){
       console.log(error)
     }
@@ -62,6 +66,7 @@ function App() {
         setIsLike(false)
         setIsLove(false)
         setIsLaugh(false)
+        setIsLoading(false)
       }catch(error){
         console.error("getSingleUserChat error", error)
       }
@@ -74,15 +79,19 @@ function App() {
 console.log(newMsgUpdate)
 
   return (
-    <SelectedIDContext.Provider value={{selectedID, setSelectedID, user1, setUser1,user2, setUser2, singleChat, setSingleChat, isDarkMode, setIsDarkMode, newMsgUpdate, setNewMsgUpdate, isLike, setIsLike, isLove, setIsLove, isLaugh, setIsLaugh}}>
+    <SelectedIDContext.Provider value={{selectedID, setSelectedID, user1, setUser1,user2, setUser2, singleChat, setSingleChat, isDarkMode, setIsDarkMode, newMsgUpdate, setNewMsgUpdate, isLike, setIsLike, isLove, setIsLove, isLaugh, setIsLaugh,isLoading, isChatLoading, setIsChatLoading}}>
       <div className="container flex flex-row fixed top-[0px] left-[45px] inset-0 h-screen overflow-hidden bg-white text-black dark:bg-[#2B2B2B] dark:text-stone-200 dark:border-stone-500">
           <div className="left-section w-[518px] flex flex-col dark:border-stone-500">
             <div className="left-section-topArea h-[75px] flex flex-row border border-gray-300 dark:border-stone-500">
               <LeftSectionTop/>
             </div>
             <div className="left-section-buttonArea w-[518px] flex-grow flex flex-col overflow-scroll inset-shadow-sm">
-              {allConversations.map((chat, index)=>(
-                <ChatCard key={index} chat={chat}/> 
+              {isChatLoading ? (
+                Array.from({ length: 9 }).map((_, index)=>
+                  <ChatCardSkelton key={index} count={1}/>)
+                ):(
+                  allConversations.map((chat, index)=>(
+                    <ChatCard key={index} chat={chat}/>)
               ))}
 
             </div>
