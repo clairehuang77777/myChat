@@ -68,7 +68,7 @@ export const Msg = ({msg}) => {
         <div className="left-msg-rightTextArea-top-time text-xs pl-2 items-end justify-end flex flex-rows">{formattedDate}</div>
       </div>
       <div className={rightSideOn? "right-msg-rightTextArea-reaction flex flex-row-reverse" : "left-msg-rightTextArea-reaction flex flex-row"}>
-        <Reaction number={msg.reactions}/>
+        <Reaction number={msg.reactions} msgContent={msg.message} msgUser={msg.user} msgTimestamp={msg.timestamp}/>
       </div>
       </div>
     </div>

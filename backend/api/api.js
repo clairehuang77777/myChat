@@ -39,3 +39,48 @@ catch(error){
     console.error("postSystemMsg Error", error)
   } 
 }
+
+export async function updateLikeNum(newLike,msgContent,msgUser,msgTimestamp){
+  try {
+    const res = await axios.post(`${API_URL}/conversations/like`,{
+        newLike,
+        msgContent,
+        msgUser,
+        msgTimestamp
+      })
+    console.log(res.data.message)
+    return res.data.message
+  }catch(error){
+    console.error("updateLikeNum API ERROR",error)
+  }
+}
+
+export async function updateLoveNum(newLove,msgContent,msgUser,msgTimestamp){
+  try{
+    const res = await axios.post(`${API_URL}/conversations/love`,{
+        newLove,
+        msgContent,
+        msgUser,
+        msgTimestamp
+      })
+    console.log(res.data.message)
+    return res.data.message
+  }catch(error){
+    console.error("updateLoveNum API ERROR",error)
+  }
+}
+
+export async function updateLaughNum(newLaugh,msgContent,msgUser,msgTimestamp){
+  try{
+    const res = await axios.post(`${API_URL}/conversations/laugh`,{
+        newLaugh,
+        msgContent,
+        msgUser,
+        msgTimestamp
+      })
+    console.log(res.data.message)
+    return res.data.message
+  }catch(error){
+    console.error("updateLaughNum API ERROR",error)
+  }
+}

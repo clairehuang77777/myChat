@@ -123,6 +123,75 @@ app.post('/conversations/:id/messages/create',(req , res) =>{
   res.status(201).json({ message: "success", data: chatData.messages });
 })
 
+app.post('/conversations/like',(req , res) =>{
+  //先從req上載下資料
+  console.log(req.body.newLike)
+  console.log(req.body.msgContent)
+  const newLikeNum = req.body.newLike
+  const finderContent = req.body.msgContent
+  const finderUser =req.body.msgUser
+  const finderTimestamp = req.body.msgTimestamp
+
+  //取得原始完整資料
+  console.log(chatData.messages)
+  const allMessages = chatData.messages
+
+  //從message中找到對的那一筆
+  const findMsg = allMessages.find((msg)=>msg.message === finderContent && msg.user === finderUser && msg.timestamp === finderTimestamp)
+  console.log(findMsg)
+  //更新數字
+  findMsg.reactions.like = newLikeNum
+  //重印完整資料
+  console.log(chatData.messages)
+  res.status(201).json({message:"like_sccuess",data: chatData.messages})
+})
+
+app.post('/conversations/love',(req , res) =>{
+  //先從req上載下資料
+  console.log(req.body.newLove)
+  console.log(req.body.msgContent)
+  const newLoveNum = req.body.newLove
+  const finderContent = req.body.msgContent
+  const finderUser =req.body.msgUser
+  const finderTimestamp = req.body.msgTimestamp
+
+  //取得原始完整資料
+  console.log(chatData.messages)
+  const allMessages = chatData.messages
+
+  //從message中找到對的那一筆
+  const findMsg = allMessages.find((msg)=>msg.message === finderContent && msg.user === finderUser && msg.timestamp === finderTimestamp)
+  console.log(findMsg)
+  //更新數字
+  findMsg.reactions.love = newLoveNum
+  //重印完整資料
+  console.log(chatData.messages)
+  res.status(201).json({message:"love_sccuess",data: chatData.messages})
+})
+
+app.post('/conversations/laugh',(req , res) =>{
+  //先從req上載下資料
+  console.log(req.body.newLaugh)
+  console.log(req.body.msgContent)
+  const newLaughNum = req.body.newLaugh
+  const finderContent = req.body.msgContent
+  const finderUser =req.body.msgUser
+  const finderTimestamp = req.body.msgTimestamp
+
+  //取得原始完整資料
+  console.log(chatData.messages)
+  const allMessages = chatData.messages
+
+  //從message中找到對的那一筆
+  const findMsg = allMessages.find((msg)=>msg.message === finderContent && msg.user === finderUser && msg.timestamp === finderTimestamp)
+  console.log(findMsg)
+  //更新數字
+  findMsg.reactions.laugh = newLaughNum
+  //重印完整資料
+  console.log(chatData.messages)
+  res.status(201).json({message:"laugh_sccuess",data: chatData.messages})
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

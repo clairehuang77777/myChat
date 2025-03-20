@@ -17,6 +17,9 @@ function App() {
     window.matchMedia("(prefers-color-scheme: dark)").matches
   )
   const [newMsgUpdate, setNewMsgUpdate] = useState(false);
+  const [isLike, setIsLike]=useState(false)
+  const [isLove, setIsLove]=useState(false)
+  const [isLaugh, setIsLaugh]=useState(false)
 
   useEffect(() => {
     // 偵測系統是否為 Dark Mode
@@ -56,6 +59,9 @@ function App() {
         console.log(res)
         setSingleChat(res)
         setNewMsgUpdate(false)
+        setIsLike(false)
+        setIsLove(false)
+        setIsLaugh(false)
       }catch(error){
         console.error("getSingleUserChat error", error)
       }
@@ -63,12 +69,12 @@ function App() {
 
     getSigleUserChat(selectedID)
     
-  },[selectedID, newMsgUpdate])
+  },[selectedID, newMsgUpdate, isLike, isLove, isLaugh])
   
 console.log(newMsgUpdate)
 
   return (
-    <SelectedIDContext.Provider value={{selectedID, setSelectedID, user1, setUser1,user2, setUser2, singleChat, setSingleChat, isDarkMode, setIsDarkMode, newMsgUpdate, setNewMsgUpdate }}>
+    <SelectedIDContext.Provider value={{selectedID, setSelectedID, user1, setUser1,user2, setUser2, singleChat, setSingleChat, isDarkMode, setIsDarkMode, newMsgUpdate, setNewMsgUpdate, isLike, setIsLike, isLove, setIsLove, isLaugh, setIsLaugh}}>
       <div className="container flex flex-row fixed top-[0px] left-[45px] inset-0 h-screen overflow-hidden bg-white text-black dark:bg-[#2B2B2B] dark:text-stone-200 dark:border-stone-500">
           <div className="left-section w-[518px] flex flex-col dark:border-stone-500">
             <div className="left-section-topArea h-[75px] flex flex-row border border-gray-300 dark:border-stone-500">
