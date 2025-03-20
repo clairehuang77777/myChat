@@ -3,7 +3,7 @@ import { TextArea } from '../src/component/TextArea'
 import { ChatCard } from './component/ChatCard'
 import { LeftSectionTop } from './component/LeftSectionTop'
 import { RightSectionCenter } from './component/RightSectionCenter'
-import { getAllConversation, getSingleCnvs } from '../backend/api/api'
+import { getAllConversation, getSingleCnvs } from '../../backend/api/api'
 import { useEffect, useState } from 'react'
 import { SelectedIDContext } from './SelectedIDContext'
 
