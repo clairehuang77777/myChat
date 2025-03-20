@@ -1,6 +1,7 @@
 
 import express from 'express'
 //從node.js引入path 跟fs模組
+import dotenv from 'dotenv'
 
 import fs from "fs"
 import path from "path"
@@ -8,6 +9,10 @@ import cors from "cors"
 /* ES module中需要自己定義__dirname*/
 import { fileURLToPath} from "url"
 import { dirname } from "path"
+
+dotenv.config({path : `.env.${process.env.NODE_ENV}`})
+console.log("透過terminal指令載入環境變數",process.env.NODE_ENV)
+console.log("透過讀取env file去讀取API URL",process.env.API_URL)
 
 
 const app = express()
@@ -19,7 +24,7 @@ const allowCors = () => {
     return {
       origin: (origin, callback) => {
         const allowedOrigins = [
-          '' // 本地開發環境
+          'https://mychat-b570.onrender.com' // 本地開發環境
         ];
         console.log("CORS request from:", origin); // 記錄請求來源
 
