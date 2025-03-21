@@ -40,7 +40,7 @@ console.log(newMsgUpdate)
 
   return (
     <>
-      <textarea ref={inputRef} className="textarea mt-3 ml-3 pt-3 h-[110px] border border-stone-300 rounded-md" id="post" name="post" rows="3" cols="95" onChange={(event)=>handleOnchangeEvent(event)}>
+      <textarea ref={inputRef} className="textarea mt-3 ml-3 pt-3 h-[110px] border border-stone-300 rounded-md pl-3" id="post" name="post" rows="3" cols="95" onChange={(event)=>handleOnchangeEvent(event)}>
       </textarea>
       <button className="post-btn rounded-lg bg-[#ff6e06] text-white text-black h-[50px] w-[95px] mt-3 ml-5 dark:text-white dark:bg-[#5540d7]" type="button" onClick={()=>handleSendClick()}>Send</button>
     </>
