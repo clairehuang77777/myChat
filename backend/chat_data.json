@@ -1599,6 +1599,48 @@
         "laugh": 0
       },
       "timestamp": 1742455457499
+    },
+    {
+      "conversationId": 3,
+      "userId": null,
+      "user": null,
+      "avatar": null,
+      "messageType": "system",
+      "message": "System message: System message: Indecent text detected, please be polite",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 0
+      },
+      "timestamp": 1742544262862
+    },
+    {
+      "conversationId": 1,
+      "userId": null,
+      "user": null,
+      "avatar": null,
+      "messageType": "system",
+      "message": "System message: don't use unpolite words, thanks",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 0
+      },
+      "timestamp": 1742544530022
+    },
+    {
+      "conversationId": 5,
+      "userId": null,
+      "user": null,
+      "avatar": null,
+      "messageType": "system",
+      "message": "System message: impolite world detected, thanks",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "laugh": 0
+      },
+      "timestamp": 1742544601345
     }
   ]
 }
