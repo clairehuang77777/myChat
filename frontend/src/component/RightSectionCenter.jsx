@@ -1,7 +1,7 @@
 // import { LeftMsg } from './LeftMsg'
 // import { RightMsg } from './RightMsg'
 import { Msg } from './Msg'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { SelectedIDContext } from '../SelectedIDContext'
 import { MsgSkelton } from './MsgSkeleton'
 import { RightSectionTopSkeleton } from './RightSectionTopSkeleton'
@@ -153,6 +153,7 @@ export const RightSectionCenter = ({chat}) => {
   const [user1Name, setUser1Name] = useState('')
   const [user2Name, setUser2Name] = useState('')
   const [isNameLoading, setIsNameLoading]=useState(true)
+  const chatRef = useRef(null);
 
   useEffect(()=>{
     //定義user1, user2 是誰
@@ -171,7 +172,13 @@ export const RightSectionCenter = ({chat}) => {
   }
   },[chat])
   
-    
+   // 每次 messages 改變時就捲到底
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [chat]);
+
   console.log(newMsgUpdate)
   console.log("user1 是:",user1)
   console.log("user2 是:",user2)
@@ -205,7 +212,7 @@ export const RightSectionCenter = ({chat}) => {
         )
       }
     </div>
-    <div className="right-section-centerArea h-[650px] w-[1022px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm dark:border-stone-500">
+    <div ref={chatRef} className="right-section-centerArea h-[650px] w-[1022px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm dark:border-stone-500">
       {isLoading ? (
         Array.from({ length: 10 }).map((_, index) =><MsgSkelton key={index} count={1}/>)
       ) : (
