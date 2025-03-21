@@ -96,7 +96,7 @@ console.log(newMsgUpdate)
 
             </div>
           </div>
-          <div className="right-section flex flex-col flex-grow w-full">
+          <div className="right-section flex flex-col flex-grow min-w-0 pr-4">
             <RightSectionCenter chat={singleChat}/>
             <div className="right-section-buttonArea h-[160px] flex flex-row border border-gray-300 block dark:border-stone-500">
               <TextArea/>
