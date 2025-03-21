@@ -181,12 +181,12 @@ export const RightSectionCenter = ({chat}) => {
 
   return (
     <>
-    <div className="right-section-topArea h-[75px] flex flex-row flex-grow border border-gray-300 inset-shadow-sm dark:border-stone-500">
+    <div className="right-section-topArea h-[75px] w-[1022px] flex flex-row flex-grow border border-gray-300 inset-shadow-sm dark:border-stone-500">
       {isNameLoading ? (
       <RightSectionTopSkeleton/>
       ):(<>
             <div className="right-section-topArea-img flex flex-row m-4 items-center justify-center">
-              <div className="right-section-topArea-img user-1 flex flex-row items-center justify-center">
+              <div className="right-section-topArea-img user-1 flex flex-row items-center justify-center pl-3">
                 <img className="avatar-1-icon w-[40px] h-[40px] rounded-[45px]" src={`https://i.pravatar.cc/150?img=${user1}`} alt=""></img>
                 <div className="right-section-topArea-userName text-lg pl-2">{user1Name}</div>
                 <div className="right-section-topArea-userName-and text-lg pl-3"> &</div>
@@ -205,7 +205,7 @@ export const RightSectionCenter = ({chat}) => {
         )
       }
     </div>
-    <div className="right-section-centerArea h-[650px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm dark:border-stone-500">
+    <div className="right-section-centerArea h-[650px] w-[1022px] flex-grow border-1 border-gray-300 block overflow-scroll inset-shadow-sm dark:border-stone-500">
       {isLoading ? (
         Array.from({ length: 10 }).map((_, index) =><MsgSkelton key={index} count={1}/>)
       ) : (

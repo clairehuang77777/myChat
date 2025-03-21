@@ -52,7 +52,7 @@ export const Msg = ({msg}) => {
       <div className={isSystemMsg ?
             "right-msg flex flex-row-reverse mt-1 mb-1 justify-center" :
             rightSideOn ?
-              "right-msg flex flex-row-reverse mt-1 mb-1 justify-start" :"left-msg flex flex-row mt-1 mb-1"}>
+              "right-msg flex flex-row-reverse mt-1 mb-1 pr-10 justify-start" :"left-msg flex flex-row mt-1 mb-1 pl-5"}>
           <div className={isSystemMsg ? "left-msg-leftImgArea flex flex-row items-start p-3 hidden":"left-msg-leftImgArea flex flex-row items-start p-3"}>
               <div className="left-msg-nameArea flex flex-col">
                 <img className="left-msg-nameArea-img w-[40px] h-[40px] rounded-[45px]" src={msg.avatar} alt=""></img>
