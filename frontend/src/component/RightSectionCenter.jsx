@@ -185,13 +185,21 @@ export const RightSectionCenter = ({chat}) => {
       {isNameLoading ? (
       <RightSectionTopSkeleton/>
       ):(<>
-            <div className="right-section-topArea-img flex flex-row m-4">
+            <div className="right-section-topArea-img flex flex-row m-4 items-center justify-center">
+              <div className="right-section-topArea-img user-1 flex flex-row items-center justify-center">
                 <img className="avatar-1-icon w-[40px] h-[40px] rounded-[45px]" src={`https://i.pravatar.cc/150?img=${user1}`} alt=""></img>
-                <img className="avatar-2-icon  w-[40px] h-[40px] rounded-[45px] ml-2" src={`https://i.pravatar.cc/150?img=${user2}`} alt=""></img>
+                <div className="right-section-topArea-userName text-lg pl-2">{user1Name}</div>
+                <div className="right-section-topArea-userName-and text-lg pl-3"> &</div>
+              </div>
+              <div className="right-section-topArea-img user-2 flex flex-row items-center justify-center pl-3">
+                <img className="avatar-2-icon  w-[40px] h-[40px] rounded-[45px]" src={`https://i.pravatar.cc/150?img=${user2}`} alt=""></img>
+                <div className="right-section-topArea-userName text-xl pl-2">{user2Name}
+                </div>
+              </div>
             </div>
             <div className="right-section-topArea-img flex flex-row">
-                <div className="right-section-topArea-userName text-2xl mt-5">{user1Name} & {user2Name}
-                </div>
+                {/* <div className="right-section-topArea-userName text-2xl mt-5">{user1Name} & {user2Name}
+                </div> */}
             </div>
           </>
         )
