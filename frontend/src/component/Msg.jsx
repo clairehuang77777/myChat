@@ -44,7 +44,7 @@ export const Msg = ({msg}) => {
 
 
   //處理timestamp
-  const timestamp = msg.timestamp; // Unix timestamp (毫秒)
+  const timestamp = Number(msg.timestamp); // Unix timestamp (毫秒)
   const date = new Date(timestamp);
   const formattedDate = `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
 

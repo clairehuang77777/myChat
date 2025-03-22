@@ -1,7 +1,7 @@
 // import { LeftMsg } from './LeftMsg'
 // import { RightMsg } from './RightMsg'
 import { Msg } from './Msg'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { SelectedIDContext } from '../SelectedIDContext'
 import { MsgSkelton } from './MsgSkeleton'
 import { RightSectionTopSkeleton } from './RightSectionTopSkeleton'
@@ -155,6 +155,15 @@ export const RightSectionCenter = ({chat}) => {
   const [isNameLoading, setIsNameLoading]=useState(true)
   // const chatRef = useRef(null);
 
+  const lastMsgRef = useRef(null); 
+
+   // 每次 chat 改變就滑到最下面（滑動效果）
+  useEffect(() => {
+    if (lastMsgRef.current) {
+      lastMsgRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chat]);
+
   useEffect(()=>{
     //定義user1, user2 是誰
   if(chat.length > 0){
@@ -216,8 +225,16 @@ export const RightSectionCenter = ({chat}) => {
       {isLoading ? (
         Array.from({ length: 10 }).map((_, index) =><MsgSkelton key={index} count={1}/>)
       ) : (
-      renderChat.map((msg, index) => (<Msg key={index} msg={msg}/>))
-      )}
+      renderChat.map((msg, index) => {
+        const isLast = index === renderChat.length - 1
+        
+        return (
+        <div key={index} ref={isLast ? lastMsgRef : null}>
+          <Msg msg={msg}/>
+          </div>
+        )
+      }))
+      }
     </div>
     </>
   )
