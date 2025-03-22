@@ -14,7 +14,7 @@
 ## Build With
 - **Frontend**: React with Vite / TailwindCSS
 - **Backend**: Node.js + Express
-- **Data**: JSON file
+- **Data**: database on Render (PG)
 - **Deploy on**: Render
 
 ## ScreenShot
