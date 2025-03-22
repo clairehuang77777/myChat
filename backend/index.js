@@ -130,7 +130,7 @@ app.get('/conversations', async (req, res) => {
 })
 
 
-//定義--撈chatroom api--[---改成連db---]
+//定義-- 撈chatroom api[---改成連db---]
 app.get(`/message`, async (req, res) => {
   //從api.js拉下req conversation
   const {conversationID} = req.query
@@ -169,7 +169,7 @@ app.get(`/message`, async (req, res) => {
   }
 })
 
-//定義--post 系統訊息 api --api[---原本連接本地端json檔案---]
+//定義-- 撈chatroom api[---原本連接本地端json檔案---]
 // // app.get(`/message`, (req, res) => {
 //   const {conversationID} = req.query
 //   const cnvtID = Number(conversationID)
@@ -180,7 +180,7 @@ app.get(`/message`, async (req, res) => {
 //   res.send(selectedMsg)
 // })
 
-//定義api[---原本連接本地端json檔案---]
+//定義-- post 系統訊息 api[---原本連接本地端json檔案---]
 
 // app.post('/conversations/:id/messages/create',(req , res) =>{
 //   console.log(req.body)//{ inputValue: 'this is good' }
@@ -220,7 +220,7 @@ app.get(`/message`, async (req, res) => {
 //   res.status(201).json({ message: "success", data: chatData.messages });
 // })
 
-//定義--post 系統訊息 api --[---改成連db---]
+//定義--post 系統訊息 api [---改成連db---]
 app.post('/conversations/:id/messages/create', async(req , res) =>{
   console.log(req.body)//{ inputValue: 'this is good' }
   console.log(req.params) //{ id: '1' }
@@ -263,7 +263,7 @@ app.post('/conversations/:id/messages/create', async(req , res) =>{
   }
 })
 
-//定義 post like -- api[---原本連接本地端json檔案---]
+//定義 post like api[---原本連接本地端json檔案---]
 // app.post('/conversations/like',(req , res) =>{
 //   //先從req上載下資料
 //   console.log(req.body.newLike)
@@ -288,7 +288,7 @@ app.post('/conversations/:id/messages/create', async(req , res) =>{
 // })
 
 
-//定義 post like -- api[---改成連db---]
+//定義 post like api[---改成連db---]
 app.post('/conversations/like',async(req , res) =>{
   //先從req上載下資料
   console.log(req.body.newLike)
@@ -356,7 +356,7 @@ app.post('/conversations/like',async(req , res) =>{
 
   } catch (err) {
     console.error('查詢失敗', err)
-    res.status(500).send('DB 更新失敗')
+    res.status(500).send('DB like更新失敗')
   } finally {
     client.release()
   }
@@ -454,13 +454,13 @@ app.post('/conversations/love',async(req , res) =>{
 
   } catch (err) {
     console.error('查詢失敗', err)
-    res.status(500).send('DB 更新失敗')
+    res.status(500).send('DB love 更新失敗')
   } finally {
     client.release()
   }
 })
 
-//定義 post laugh api[---原本連接本地端json檔案---]
+//定義 post laugh api [---原本連接本地端json檔案---]
 // app.post('/conversations/laugh',(req , res) =>{
 //   //先從req上載下資料
 //   console.log(req.body.newLaugh)
@@ -484,7 +484,7 @@ app.post('/conversations/love',async(req , res) =>{
 //   res.status(201).json({message:"laugh_sccuess",data: chatData.messages})
 // })
 
-//定義 post laugh api[---改成連db---]
+//定義 post laugh api [---改成連db---]
 app.post('/conversations/laugh',async(req , res) =>{
   //先從req上載下資料
   console.log(req.body.newLaugh)
