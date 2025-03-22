@@ -9,11 +9,30 @@ import cors from "cors"
 /* ES module中需要自己定義__dirname*/
 import { fileURLToPath} from "url"
 import { dirname } from "path"
+// 載入pg模組
+import pkg from 'pg'
+const { Pool } = pkg
 
 dotenv.config({path : `.env.${process.env.NODE_ENV}`})
 console.log("透過terminal指令載入環境變數",process.env.NODE_ENV)
 console.log("透過讀取env file去讀取API URL",process.env.API_URL)
 
+// 建立PostgreSQL的連線池
+const pool = new Pool({
+  host: process.env.PG_HOST,
+  port: process.env.PG_PORT,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+  database: process.env.PG_DATABASE
+})
+
+// 確認連線成功
+pool.connect()
+  .then(client => {
+    console.log('Connected to PostgreSQL')
+    client.release()
+  })
+  .catch(err => console.error('PostgreSQL connection error', err))
 
 const app = express()
 const port = 3000
@@ -69,10 +88,58 @@ const chatData = JSON.parse(fs.readFileSync(chatDataPath,"utf-8"))
 //console.log(chatData.messages)
 
 
-//定義api
-app.get('/conversations', (req, res) => {
-  res.send(chatData.conversations)
+//定義api--原本連本地端json資料
+// app.get('/conversations', (req, res) => {
+//   res.send(chatData.conversations)
+// })
+
+//定義api--調整為資料從db而來
+app.get('/conversations', async (req, res) => {
+  try {
+    const conversationResult = await pool.query('SELECT * FROM conversation')
+    const participantResult = await pool.query('SELECT * FROM participant')
+    
+    console.log(conversationResult)
+    console.log(participantResult)
+
+    const conversations = conversationResult.rows.map(conv => {
+      const participants = participantResult.rows
+      .filter(parti => parti.conversation_id === conv.id)
+        .map(parti =>({
+          userId: parti.userid,
+          user:parti.user,
+          avatar:parti.avatar
+        }))
+
+      return {
+        id:conv.id,
+        lastMessage:conv.lastmessage,
+        timestamp:conv.timestamp,
+        participants
+      }
+    })
+
+    console.log(conversations)
+    res.json({conversations})
+
+  } catch (err) {
+    console.error('查詢失敗', err)
+    res.status(500).send('DB 查詢失敗')
+  }
 })
+
+app.get('/participant-test-db', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM participant')
+    console.log(result)
+    console.log(result.row)
+    res.json(result.rows)
+  } catch (err) {
+    console.error('查詢失敗', err)
+    res.status(500).send('DB 查詢失敗')
+  }
+})
+
 
 //定義api
 app.get(`/message`, (req, res) => {

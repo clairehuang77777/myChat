@@ -6,8 +6,8 @@ console.log(import.meta.env.VITE_API_URL)
 export async function getAllConversation(){
   try {
     const res = await axios.get(`${API_URL}/conversations`)
-    console.log(res.data)
-    return res.data
+    console.log(res.data.conversations)
+    return res.data.conversations
   }
   catch(error){
     console.error("getAllConversation API failed",error)

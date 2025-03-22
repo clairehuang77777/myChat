@@ -3,7 +3,7 @@ import { SelectedIDContext } from "../SelectedIDContext";
 
 export const ChatCard = ({chat}) => {
   //處理timestamp
-  const timestamp = chat.timestamp; // Unix timestamp (毫秒)
+  const timestamp = Number(chat.timestamp); // Unix timestamp (毫秒)
   const date = new Date(timestamp);
   const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`;
 
