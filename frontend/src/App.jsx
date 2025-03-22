@@ -58,6 +58,7 @@ function App() {
   //
   useEffect(()=>{
     async function getSigleUserChat(selectedID){
+      setIsLoading(true)
       try {
         const res = await getSingleCnvs(selectedID)
         console.log(res)

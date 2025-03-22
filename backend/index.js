@@ -89,12 +89,12 @@ const chatData = JSON.parse(fs.readFileSync(chatDataPath,"utf-8"))
 
 
 
-//定義api----------原本連本地端json資料----------
+//定義api[---原本連接本地端json檔案---]
 // app.get('/conversations', (req, res) => {
 //   res.send(chatData.conversations)
 // })
 
-//定義api--調整為資料從db而來----------
+//定義api[---改成連db---]
 app.get('/conversations', async (req, res) => {
   try {
     const conversationResult = await pool.query('SELECT * FROM conversation')
@@ -130,7 +130,7 @@ app.get('/conversations', async (req, res) => {
 })
 
 
-//定義api--調整為資料從db而來----------
+//定義api[---改成連db---]
 app.get(`/message`, async (req, res) => {
   //從api.js拉下req conversation
   const {conversationID} = req.query
@@ -141,13 +141,7 @@ app.get(`/message`, async (req, res) => {
     const reactionResult = await pool.query('SELECT * FROM reaction')
     
   const messages = messageResult.rows.map(msg => {
-      const reactions = reactionResult.rows
-      .filter(reaction => reaction.message_id === msg.message_id)
-        .map(reaction =>({
-          like: reaction.like,
-          love: reaction.love,
-          laugh: reaction.laugh
-        }))
+      const reactions = reactionResult.rows.find(r => r.message_id === msg.message_id)
 
       return {
         conversationId:msg.conversationid,
@@ -157,8 +151,12 @@ app.get(`/message`, async (req, res) => {
         messageType:msg.messagetype,
         message:msg.message,
         timestamp:msg.timestamp,
-        reactions
-      }
+        reactions: reactions ? {
+          like: reactions.like,
+          love: reactions.love,
+          laugh: reactions.laugh
+          } : { like: 0, love: 0, laugh: 0 }
+        }
     })
       
   const selectedMsg = messages.filter(message=>message.conversationId == cnvtID)
@@ -171,8 +169,8 @@ app.get(`/message`, async (req, res) => {
   }
 })
 
-//定義api----------原本連本地端json資料----------
-// app.get(`/message`, (req, res) => {
+//定義api[---原本連接本地端json檔案---]
+// // app.get(`/message`, (req, res) => {
 //   const {conversationID} = req.query
 //   const cnvtID = Number(conversationID)
 
@@ -182,7 +180,7 @@ app.get(`/message`, async (req, res) => {
 //   res.send(selectedMsg)
 // })
 
-//定義api----------原本連本地端json資料----------
+//定義api[---原本連接本地端json檔案---]
 
 // app.post('/conversations/:id/messages/create',(req , res) =>{
 //   console.log(req.body)//{ inputValue: 'this is good' }
@@ -222,8 +220,7 @@ app.get(`/message`, async (req, res) => {
 //   res.status(201).json({ message: "success", data: chatData.messages });
 // })
 
-//定義api----------改成連db----------
-
+//定義api[---改成連db---]
 app.post('/conversations/:id/messages/create', async(req , res) =>{
   console.log(req.body)//{ inputValue: 'this is good' }
   console.log(req.params) //{ id: '1' }
@@ -266,8 +263,32 @@ app.post('/conversations/:id/messages/create', async(req , res) =>{
   }
 })
 
+//定義api[---原本連接本地端json檔案---]
+// app.post('/conversations/like',(req , res) =>{
+//   //先從req上載下資料
+//   console.log(req.body.newLike)
+//   console.log(req.body.msgContent)
+//   const newLikeNum = req.body.newLike
+//   const finderContent = req.body.msgContent
+//   const finderUser =req.body.msgUser
+//   const finderTimestamp = req.body.msgTimestamp
 
-app.post('/conversations/like',(req , res) =>{
+//   //取得原始完整資料
+//   console.log(chatData.messages)
+//   const allMessages = chatData.messages
+
+//   //從message中找到對的那一筆
+//   const findMsg = allMessages.find((msg)=>msg.message === finderContent && msg.user === finderUser && msg.timestamp === finderTimestamp)
+//   console.log(findMsg)
+//   //更新數字
+//   findMsg.reactions.like = newLikeNum
+//   //重印完整資料
+//   console.log(chatData.messages)
+//   res.status(201).json({message:"like_sccuess",data: chatData.messages})
+// })
+
+//定義api[---改成連db---]
+app.post('/conversations/like',async(req , res) =>{
   //先從req上載下資料
   console.log(req.body.newLike)
   console.log(req.body.msgContent)
@@ -276,18 +297,68 @@ app.post('/conversations/like',(req , res) =>{
   const finderUser =req.body.msgUser
   const finderTimestamp = req.body.msgTimestamp
 
-  //取得原始完整資料
-  console.log(chatData.messages)
-  const allMessages = chatData.messages
+  const client = await pool.connect();
 
+  //取得原始完整資料
+  try {
+    const messageResult = await pool.query('SELECT * FROM message')
+    const reactionResult = await pool.query('SELECT * FROM reaction')
+    
+  const messages = messageResult.rows.map(msg => {
+      const reactions = reactionResult.rows
+      .find(reaction => reaction.message_id === msg.message_id) || {
+        like:0, love: 0,laugh: 0 } 
+
+      return {
+        message_id:msg.message_id,
+        conversationId:msg.conversationid,
+        userId:msg.userid,
+        user:msg.username,
+        avatar:msg.avatar,
+        messageType:msg.messagetype,
+        message:msg.message,
+        timestamp:msg.timestamp,
+        reactions: {
+          like: reactions.like, 
+          love: reactions.love,
+          laugh: reactions.laugh
+        }
+      }
+    })
+      
+  console.log(messages)
   //從message中找到對的那一筆
-  const findMsg = allMessages.find((msg)=>msg.message === finderContent && msg.user === finderUser && msg.timestamp === finderTimestamp)
+  const findMsg = messages.find(
+    (msg)=>
+      msg.message === finderContent && 
+      msg.user === finderUser && 
+      msg.timestamp === finderTimestamp
+    )
+
   console.log(findMsg)
-  //更新數字
-  findMsg.reactions.like = newLikeNum
-  //重印完整資料
-  console.log(chatData.messages)
-  res.status(201).json({message:"like_sccuess",data: chatData.messages})
+
+  if (!findMsg) {
+      return res.status(404).json({ error: "訊息找不到" });
+    }
+  
+  //找到對應那筆的msg_id
+  const messageId  = findMsg.message_id
+
+  //去更新那筆msg_id的reaction table
+  await client.query(`
+      UPDATE reaction
+      SET "like" = $1
+      WHERE message_id = $2
+    `, [newLikeNum, messageId]);
+
+    res.status(201).json({ message: "like_sccuess"})
+
+  } catch (err) {
+    console.error('查詢失敗', err)
+    res.status(500).send('DB 更新失敗')
+  } finally {
+    client.release()
+  }
 })
 
 app.post('/conversations/love',(req , res) =>{

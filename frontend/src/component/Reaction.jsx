@@ -4,7 +4,7 @@ import { SelectedIDContext } from '../SelectedIDContext'
 
 
 export const Reaction = ({number = {}, msgContent, msgUser, msgTimestamp}) => {
-  const { isLike, setIsLike, isLove, setIsLove,isLaugh, setIsLaugh } = useContext(SelectedIDContext)
+  const { isLike, setIsLike, isLove, setIsLove,isLaugh, setIsLaugh,setIsLoading,isLoading } = useContext(SelectedIDContext)
   
   async function handleThumbsUpClick(numberLike){
     console.log("thumbs up click",numberLike)
@@ -21,6 +21,7 @@ export const Reaction = ({number = {}, msgContent, msgUser, msgTimestamp}) => {
       console.log(res)
       if (res === "like_sccuess"){
         setIsLike(true)
+        console.log(isLike)
       }
     }catch(error){
       console.error(error)
