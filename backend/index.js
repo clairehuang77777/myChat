@@ -88,19 +88,20 @@ const chatData = JSON.parse(fs.readFileSync(chatDataPath,"utf-8"))
 //console.log(chatData.messages)
 
 
-//定義api--原本連本地端json資料
+
+//定義api----------原本連本地端json資料----------
 // app.get('/conversations', (req, res) => {
 //   res.send(chatData.conversations)
 // })
 
-//定義api--調整為資料從db而來
+//定義api--調整為資料從db而來----------
 app.get('/conversations', async (req, res) => {
   try {
     const conversationResult = await pool.query('SELECT * FROM conversation')
     const participantResult = await pool.query('SELECT * FROM participant')
     
-    console.log(conversationResult)
-    console.log(participantResult)
+    // console.log(conversationResult)
+    // console.log(participantResult)
 
     const conversations = conversationResult.rows.map(conv => {
       const participants = participantResult.rows
@@ -119,7 +120,7 @@ app.get('/conversations', async (req, res) => {
       }
     })
 
-    console.log(conversations)
+    // console.log(conversations)
     res.json({conversations})
 
   } catch (err) {
@@ -128,29 +129,59 @@ app.get('/conversations', async (req, res) => {
   }
 })
 
-app.get('/participant-test-db', async (req, res) => {
+
+//定義api--調整為資料從db而來----------
+app.get(`/message`, async (req, res) => {
+  //從api.js拉下req conversation
+  const {conversationID} = req.query
+  const cnvtID = Number(conversationID)
+  
   try {
-    const result = await pool.query('SELECT * FROM participant')
-    console.log(result)
-    console.log(result.row)
-    res.json(result.rows)
+  const messageResult = await pool.query('SELECT * FROM message')
+    const reactionResult = await pool.query('SELECT * FROM reaction')
+    
+  const messages = messageResult.rows.map(msg => {
+      const reactions = reactionResult.rows
+      .filter(reaction => reaction.message_id === msg.message_id)
+        .map(reaction =>({
+          like: reaction.like,
+          love: reaction.love,
+          laugh: reaction.laugh
+        }))
+
+      return {
+        conversationId:msg.conversationid,
+        userId:msg.userid,
+        user:msg.username,
+        avatar:msg.avatar,
+        messageType:msg.messagetype,
+        message:msg.message,
+        timestamp:msg.timestamp,
+        reactions
+      }
+    })
+      
+  const selectedMsg = messages.filter(message=>message.conversationId == cnvtID)
+  console.log(selectedMsg)
+  res.send(selectedMsg)
+
   } catch (err) {
     console.error('查詢失敗', err)
     res.status(500).send('DB 查詢失敗')
   }
 })
 
+//定義api----------原本連本地端json資料----------
+// app.get(`/message`, (req, res) => {
+//   const {conversationID} = req.query
+//   const cnvtID = Number(conversationID)
 
-//定義api
-app.get(`/message`, (req, res) => {
-  const {conversationID} = req.query
-  const cnvtID = Number(conversationID)
+//   const messages = chatData.messages
+//   const selectedMsg = messages.filter(message=>message.conversationId == cnvtID)
+//   console.log(selectedMsg)
+//   res.send(selectedMsg)
+// })
 
-  const messages = chatData.messages
-  const selectedMsg = messages.filter(message=>message.conversationId == cnvtID)
-  console.log(selectedMsg)
-  res.send(selectedMsg)
-})
 
 app.post('/conversations/:id/messages/create',(req , res) =>{
   console.log(req.body)//{ inputValue: 'this is good' }
