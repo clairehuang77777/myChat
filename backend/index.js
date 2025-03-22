@@ -182,8 +182,49 @@ app.get(`/message`, async (req, res) => {
 //   res.send(selectedMsg)
 // })
 
+//定義api----------原本連本地端json資料----------
 
-app.post('/conversations/:id/messages/create',(req , res) =>{
+// app.post('/conversations/:id/messages/create',(req , res) =>{
+//   console.log(req.body)//{ inputValue: 'this is good' }
+//   console.log(req.params) //{ id: '1' }
+
+//   const newConversationId = req.params.id
+//   const newMessage = req.body.inputValue
+//   const timestamp = req.body.timestamp
+
+//   // 確保 conversationId 是數字
+//   const conversationId = parseInt(newConversationId, 10);
+//   if (isNaN(conversationId)) {
+//     return res.status(400).json({ error: "Invalid conversation ID" });
+//   }
+
+//   const newSystemMessage = {
+//      "conversationId": conversationId,
+//       "userId": null,
+//       "user": null,
+//       "avatar": null,
+//       "messageType": "system",
+//       "message": `System message: ${newMessage}`,
+//       "reactions": {
+//         "like": 0,
+//         "love": 0,
+//         "laugh": 0
+//       },
+//       "timestamp": timestamp
+//   }
+//   console.log("updated message", newSystemMessage)
+//   console.log(chatData.messages)
+//   chatData.messages.push(newSystemMessage)
+  
+//   //把檔案寫進去local chat_json file
+//   fs.writeFileSync(chatDataPath,JSON.stringify(chatData,null,2),"utf-8" )
+
+//   res.status(201).json({ message: "success", data: chatData.messages });
+// })
+
+//定義api----------改成連db----------
+
+app.post('/conversations/:id/messages/create', async(req , res) =>{
   console.log(req.body)//{ inputValue: 'this is good' }
   console.log(req.params) //{ id: '1' }
 
@@ -197,29 +238,34 @@ app.post('/conversations/:id/messages/create',(req , res) =>{
     return res.status(400).json({ error: "Invalid conversation ID" });
   }
 
-  const newSystemMessage = {
-     "conversationId": conversationId,
-      "userId": null,
-      "user": null,
-      "avatar": null,
-      "messageType": "system",
-      "message": `System message: ${newMessage}`,
-      "reactions": {
-        "like": 0,
-        "love": 0,
-        "laugh": 0
-      },
-      "timestamp": timestamp
-  }
-  console.log("updated message", newSystemMessage)
-  console.log(chatData.messages)
-  chatData.messages.push(newSystemMessage)
-  
-  //把檔案寫進去local chat_json file
-  fs.writeFileSync(chatDataPath,JSON.stringify(chatData,null,2),"utf-8" )
+  const client = await pool.connect()
 
-  res.status(201).json({ message: "success", data: chatData.messages });
+  try {
+    // 1. 插入 message 表
+    const insertMessageResult = await client.query(`
+      INSERT INTO message (conversationid, userid, username, avatar, messagetype, message, timestamp)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING message_id
+    `, [conversationId, '0', 'system', null, 'system', `System message: ${newMessage}`, timestamp])
+
+    const messageId = insertMessageResult.rows[0].message_id
+
+    // 2. 插入 reaction 表
+    await client.query(`
+      INSERT INTO reaction (message_id, "like", "love", "laugh")
+      VALUES ($1, 0, 0, 0)
+    `, [messageId])
+
+    res.status(201).json({ message: "success", message_id: messageId })
+
+  } catch (error) {
+    console.error("新增訊息失敗", error)
+    res.status(500).json({ error: "新增訊息失敗" })
+  } finally {
+    client.release()
+  }
 })
+
 
 app.post('/conversations/like',(req , res) =>{
   //先從req上載下資料
