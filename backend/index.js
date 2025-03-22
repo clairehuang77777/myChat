@@ -17,14 +17,25 @@ dotenv.config({path : `.env.${process.env.NODE_ENV}`})
 console.log("透過terminal指令載入環境變數",process.env.NODE_ENV)
 console.log("透過讀取env file去讀取API URL",process.env.API_URL)
 
+let pool
+
 // 建立PostgreSQL的連線池
-const pool = new Pool({
-  host: process.env.PG_HOST,
-  port: process.env.PG_PORT,
-  user: process.env.PG_USER,
-  password: process.env.PG_PASSWORD,
-  database: process.env.PG_DATABASE
-})
+if (process.env.NODE_ENV === 'production') {
+  pool = new Pool({
+    connectionString: process.env.PG_URL,
+    ssl: {
+      rejectUnauthorized: false, // Render 必須加這行，否則會連不上
+    }
+  })
+} else {
+    pool = new Pool({
+      host: process.env.PG_HOST,
+      port: process.env.PG_PORT,
+      user: process.env.PG_USER,
+      password: process.env.PG_PASSWORD,
+      database: process.env.PG_DATABASE
+    })
+  }
 
 // 確認連線成功
 pool.connect()
